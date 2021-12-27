@@ -11,6 +11,9 @@
         <c:when test="${errorMessage ==1}">
             <loc:print key="DatabaseOutDate"/>
         </c:when>
+        <c:when test="${errorMessage ==2}">
+            <loc:print key="IncorrectLoginOrPassword"/>
+        </c:when>
         <c:otherwise>
             <loc:print key="LostConnectionDatabase"/>
         </c:otherwise>

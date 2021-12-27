@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="FinalProjectOnSpring:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>FinalProjectOnSpring</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="Testing-0.1.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="FinalProjectOnSpring:war exploded" />
+    </root>
+  </artifact>
+</component>

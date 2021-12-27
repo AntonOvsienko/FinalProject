@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>hidden</title>
+    <title>start</title>
     <style>
         @import url(index_style.css);
     </style>

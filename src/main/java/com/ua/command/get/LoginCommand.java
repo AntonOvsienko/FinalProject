@@ -1,5 +1,6 @@
 package com.ua.command.get;
 
+import com.ua.ConnectionPool;
 import com.ua.Utils.CloseLink;
 import com.ua.Utils.Constant;
 import com.ua.command.Command;
@@ -14,15 +15,13 @@ import java.sql.*;
 
 public class LoginCommand implements Command {
 
-    private static final Logger log= LogManager.getLogger(LoginCommand.class.getName());
+    private static final Logger log = LogManager.getLogger(LoginCommand.class.getName());
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp,Connection con) {
+    public String execute(HttpServletRequest req, HttpServletResponse resp, Connection con) {
         //Checking for a login in the database and assigning it a role
         HttpSession session = req.getSession();
-
-        String address="";
-
+        String address = "";
         if (req.getParameter("globalLogin") != null) {
             session.setAttribute("globalLogin", req.getParameter("globalLogin"));
         }
@@ -37,36 +36,33 @@ public class LoginCommand implements Command {
         try {
             System.out.println("con ==> " + con);
             ps = con.prepareStatement(Constant.SQL_SELECT_LOGIN_PASSWORD_WHERE_LOGIN_AND_PASSWORD);
-            int k=1;
+            int k = 1;
             ps.setString(k++, login);
             ps.setString(k++, password);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 role = rs.getString("role");
+                System.out.println("role=" + role);
                 session.setAttribute("globalRole", role);
                 keyLogin = rs.getInt("id");
                 session.setAttribute("keyLogin", keyLogin);
-                String url = "SELECT * FROM " + role + " WHERE login_password_id=" + keyLogin;
-                Statement st = con.createStatement();
-                ResultSet rs2 = st.executeQuery(url);
-                if (role.equals("administrator")) {
-                    session.setAttribute("finalAddress","users/doctorList.jsp");
+                if (role.equals("ROLE_ADMIN")) {
+                    session.setAttribute("finalAddress", "users/doctorList.jsp");
                     address = Constant.URL_CONTROLLER_VIEW_STAFF;
-                    session.setAttribute("error","");
-                } else if (role.equals("doctor")) {
-                    session.setAttribute("finalAddress","users/doctor.jsp");
+                    session.setAttribute("error", "");
+                } else if (role.equals("ROLE_DOCTOR")) {
+                    session.setAttribute("finalAddress", "users/doctor.jsp");
                     address = Constant.URL_CONTROLLER_VIEW_CASERECORD;
-                } else if (role.equals("nurse")) {
-                    session.setAttribute("finalAddress","page?page=1&pageSize=6");
+                } else if (role.equals("ROLE_NURSE")) {
+                    session.setAttribute("finalAddress", "page?page=1&pageSize=6");
                     address = Constant.URL_CONTROLLER_VIEW_CASERECORD;
-
                 }
             }
             rs.close();
             ps.close();
-        }  catch (SQLException throwables) {
+        } catch (SQLException throwables) {
             log.error("command Login not executed" + con, throwables);
-            session.setAttribute("errorMessage",1);
+            session.setAttribute("errorMessage", 1);
             return Constant.URL_ERROR_PAGE;
         } finally {
             CloseLink.close(con);
@@ -76,7 +72,7 @@ public class LoginCommand implements Command {
 
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) {
-        return null;
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+        return execute(req, resp, ConnectionPool.getConnection());
     }
 }

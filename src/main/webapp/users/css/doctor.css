@@ -165,6 +165,27 @@ tr:hover td {
     color: #6699ff;
 }
 
+table.table2 {
+    border: 1px solid #6cf;
+}
+
+th.table2 {
+    font-weight: normal;
+    font-size: 13px;
+    color: #039;
+    border-right: 1px solid #0865c2;
+    border-top: 1px solid #0865c2;
+    border-left: 1px solid #0865c2;
+    border-bottom: 1px solid white;
+    padding: 20px;
+}
+
+td.table2 {
+    color: #669;
+    border-right: 1px dashed #6cf;
+    padding: 10px 20px;
+}
+
 .accordion {
     background-color: #eee;
     /*background-color: white;*/
